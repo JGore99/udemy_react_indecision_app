@@ -5,20 +5,20 @@ class Counter extends React.Component {
     this.handleMinusOne = this.handleMinusOne.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.state = {
-      count: 0, 
+      count: 0,
     };
   }
   handleAddOne() {
     this.setState((prevState) => {
       return {
-        count: prevState.count + 1
+        count: prevState.count + 1,
       };
     });
   }
   handleMinusOne() {
     this.setState((prevState) => {
       return {
-        count: prevState.count - 1
+        count: prevState.count - 1,
       };
     });
   }
@@ -26,7 +26,7 @@ class Counter extends React.Component {
     this.setState(() => {
       return {
         count: 0,
-      }
+      };
     });
   }
   render() {
@@ -39,6 +39,45 @@ class Counter extends React.Component {
       </div>
     );
   }
+
+  componentDidMount() {
+    const stringCount = localStorage.getItem('count');
+    const count = parseInt(stringCount, 10)
+    if(!isNaN(count)){
+      this.setState(() => ({ count }));
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.count.length !== this.state.count) {
+      localStorage.setItem('count', this.state.count);
+    }
+  }
+  /*componentDidMount() {
+    //REACT LIFECYCLE
+    try {
+      const json = localStorage.getItem("options");
+      const options = JSON.parse(json);
+  
+      if (options) {
+        this.setState(() => ({ options }));
+      }
+    } catch (e) {
+      //Do nothing
+      //parseInt(num, 10)
+      //isNan 
+    }
+  }
+  
+  componentDidUpdate(prevProps, prevState) {
+    //usefulf for determining when data changed
+    if (prevState.options.length !== this.state.options.length) {
+      const json = JSON.stringify(this.state.options);
+      localStorage.setItem("options", json);
+      console.log("saving data");
+    }
+  }
+  */
 }
 
 ReactDOM.render(<Counter />, document.getElementById("app"));
